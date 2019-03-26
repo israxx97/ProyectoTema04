@@ -26,7 +26,7 @@
 
         switch (true) {
             case (isset($_POST['enviar'])):
-                $a_errores['descDepartamento'] = validacionFormularios::comprobarAlfaNumerico($_POST['descDepartamento'], 100, 1, 1);
+                $a_errores['descDepartamento'] = validacionFormularios::comprobarAlfaNumerico($_POST['descDepartamento'], 100, 1, 0);
 
                 foreach ($a_errores as $campo => $error) {
                     if ($error != null) {
@@ -56,6 +56,13 @@
                     $statement = $miDB->prepare('SELECT * FROM Departamento WHERE DescDepartamento LIKE "%' . $a_respuesta['descDepartamento'] . '%"');
                     $statement->execute();
 
+                    if ($a_respuesta['descDepartamento'] == '') {
+                        ?><p>Tu búsqueda tiene <?php echo $statement->rowCount(); ?> resultados.</p><?php
+                        while ($resultado = $statement->fetchObject()) {
+                            ?><p>El departamento con descripción <?php echo $resultado->DescDepartamento; ?> tiene el código <?php echo $resultado->CodDepartamento; ?>.</p><?php
+                        }
+                    }
+
                     if ($statement->rowCount() == 0) {
                         ?><p>NO existen coincidencias con la búsqueda <?php echo $a_respuesta['descDepartamento']; ?>.</p><?php
                     } else {
@@ -76,17 +83,17 @@
 
             default:
                 ?>
+                    <h1>Búsqueda de departamento por descripción</h1>
                 <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
-                    <span for="descDepartamento">Descripción departamento:&nbsp;</span>
-                    <textarea rows="5" cols="20" name="descDepartamento" placeholder="Mi departamento AAA"><?php
-                        if (isset($_REQUEST['descDepartamento']) && is_null($a_errores['descDepartamento'])) {
-                            echo $_REQUEST['descDepartamento'];
-                        }
-                        ?></textarea>
-                    <font color="red">&nbsp;*</font>
+                    <label for="descDepartamento">Descripción departamento:</label>
+                    <input size="50" type="text" name="descDepartamento" value="<?php
+                    if (isset($_REQUEST['descDepartamento']) && is_null($a_errores['descDepartamento'])) {
+                        echo $_REQUEST['descDepartamento'];
+                    }
+                    ?>" placeholder="Mi departamento AAA"/>
                     <font color="red"><?php echo $a_errores['descDepartamento']; ?></font>
                     <br><br>
-                    <input type="submit" name="enviar" value="Enviar">
+                    <input type="submit" name="enviar" value="Buscar">
                 </form>
                 <?php
                 break;
