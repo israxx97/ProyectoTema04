@@ -38,7 +38,7 @@
             case (isset($_POST['enviar'])):
                 for ($contadorDepartamento = 1; $contadorDepartamento < $numero; $contadorDepartamento++) {
                     $a_errores[$contadorDepartamento]['codDepartamento'] = validacionFormularios::comprobarAlfabetico($_POST['codDepartamento' . $contadorDepartamento], 3, 3, 1);
-                    $a_errores[$contadorDepartamento]['descDepartamento'] = validacionFormularios::comprobarAlfaNumerico($_POST['codDepartamento' . $contadorDepartamento], 100, 5, 1);
+                    $a_errores[$contadorDepartamento]['descDepartamento'] = validacionFormularios::comprobarAlfaNumerico($_POST['descDepartamento' . $contadorDepartamento], 100, 5, 1);
                 }
 
                 foreach ($a_errores as $contadorDepartamento => $a_departamento) {
@@ -62,7 +62,7 @@
             case $entradaOK:
                 for ($contadorDepartamento = 1; $contadorDepartamento < $numero; $contadorDepartamento++) {
                     $a_respuesta[$contadorDepartamento]['codDepartamento'] = strtoupper($_POST['codDepartamento' . $contadorDepartamento]);
-                    $a_respuesta[$contadorDepartamento]['descDepartamento'] = strtoupper($_POST['descDepartamento' . $contadorDepartamento]);
+                    $a_respuesta[$contadorDepartamento]['descDepartamento'] = $_POST['descDepartamento' . $contadorDepartamento];
                 }
 
                 try {
@@ -71,13 +71,13 @@
                     ?>
                     <p>Conexión correcta.</p>
                     <?php
-                    $miDB->beginTransaction();
-                    $sql = 'INSERT INTO Departamento (CodDepartametno, DescDepartamento) VALUES (:codDepartamento)';
+                    $sql = 'INSERT INTO Departamento (CodDepartamento, DescDepartamento) VALUES (:codDepartamento, :descDepartamento)';
                     $statement = $miDB->prepare($sql);
 
                     for ($numeroInsercion = 1; $numeroInsercion < $numero; $numeroInsercion++) {
-                        $statement->bindParam('codDepartamento', $a_respuesta[$numeroInsercion]['codDepartamento']);
-                        $statement->bindParam('descDepartamento', $a_respuesta[$numeroInsercion]['descDepartamento']);
+                        $miDB->beginTransaction();
+                        $statement->bindParam(':codDepartamento', $a_respuesta[$numeroInsercion]['codDepartamento']);
+                        $statement->bindParam(':descDepartamento', $a_respuesta[$numeroInsercion]['descDepartamento']);
 
                         if (!$statement->execute()) {
                             $transactionOK = false;
@@ -108,6 +108,31 @@
                 break;
 
             default:
+                ?>
+                <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+                    <?php for ($numeroInsercion = 1; $numeroInsercion < $numero; $numeroInsercion++) { ?>
+                        <label for="codDepartamento">Código departamento Nº<?php echo $numeroInsercion ?>:&nbsp;</label>
+                        <input size="3" type="text" name="codDepartamento<?php echo $numeroInsercion ?>" value="<?php
+                        if (isset($_REQUEST['codDepartamento' . $numeroInsercion]) && is_null($a_errores[$numeroInsercion]['codDepartamento'])) {
+                            echo $_REQUEST['codDepartamento' . $numeroInsercion];
+                        }
+                        ?>" placeholder="AAA"/>
+                        <font color="red">&nbsp;*</font>
+                        <font color="red"><?php echo $a_errores[$numeroInsercion]['codDepartamento']; ?></font>
+                        <br>
+                        <label for="descDepartamento">Descripción departamento Nº<?php echo $numeroInsercion ?>:&nbsp;</label>
+                        <input size="50" type="text" name="descDepartamento<?php echo $numeroInsercion ?>" value="<?php
+                        if (isset($_REQUEST['descDepartamento' . $numeroInsercion]) && is_null($a_errores[$numeroInsercion]['descDepartamento'])) {
+                            echo $_REQUEST['descDepartamento' . $numeroInsercion];
+                        }
+                        ?>" placeholder="Mi departamento AAA"/>
+                        <font color="red">&nbsp;*</font>
+                        <font color="red"><?php echo $a_errores[$numeroInsercion]['descDepartamento']; ?></font>
+                        <br><br>
+                    <?php } ?>
+                    <input type="submit" name="enviar" value="Alta"/>
+                </form>  
+                <?php
                 break;
         }
         ?>
