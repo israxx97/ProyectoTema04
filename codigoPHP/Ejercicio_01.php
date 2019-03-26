@@ -1,4 +1,8 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 require_once '../config/config.php';
 ?>
 <h1>Conexión correcta.</h1>
@@ -10,7 +14,7 @@ try {
     <p>Conexión correcta.</p>
     <?php
 } catch (PDOException $pdoe) {
-    ?><p><?php $pdoe->getMessage(); ?></p><?php
+    ?><p><?php echo $pdoe->getMessage(); ?></p><?php
 } finally {
     unset($miDB);
 }
@@ -24,7 +28,7 @@ try {
     <p>Conexión correcta.</p>
     <?php
 } catch (PDOException $pdoe) {
-    ?><p><?php $pdoe->getMessage(); ?></p><?php
+    ?><p><?php echo $pdoe->getMessage(); ?></p><?php
 } finally {
     unset($miDB);
 }
