@@ -78,25 +78,25 @@
 
             default:
                 ?>
+                <h1>Alta de departamento</h1>
                 <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
                     <label for="codDepartamento">Código departamento:</label>
-                    <input type="text" name="codDepartamento" value="<?php
+                    <input size="3" type="text" name="codDepartamento" value="<?php
                     if (isset($_REQUEST['codDepartamento']) && is_null($a_errores['codDepartamento'])) {
                         echo $_REQUEST['codDepartamento'];
                     }
                     ?>" placeholder="AAA"/><font color="red">&nbsp;*</font>
                     <font color="red"><?php echo $a_errores['codDepartamento']; ?></font>
                     <br>
-                    <span for="descDepartamento">Descripción departamento:&nbsp;</span>
-                    <textarea rows="5" cols="20" name="descDepartamento" placeholder="Mi departamento AAA"><?php
-                        if (isset($_REQUEST['descDepartamento']) && is_null($a_errores['descDepartamento'])) {
-                            echo $_REQUEST['descDepartamento'];
-                        }
-                        ?></textarea>
-                    <font color="red">&nbsp;*</font>
+                    <label for="descDepartamento">Descripción departamento:</label>
+                    <input size="50" type="text" name="descDepartamento" value="<?php
+                    if (isset($_REQUEST['descDepartamento']) && is_null($a_errores['descDepartamento'])) {
+                        echo $_REQUEST['descDepartamento'];
+                    }
+                    ?>" placeholder="Mi departamento AAA"/><font color="red">&nbsp;*</font>
                     <font color="red"><?php echo $a_errores['descDepartamento']; ?></font>
                     <br><br>
-                    <input type="submit" name="enviar" value="Enviar">
+                    <input type="submit" name="enviar" value="Alta">
                 </form>
                 <?php
                 break;
