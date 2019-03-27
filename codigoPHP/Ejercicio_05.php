@@ -172,6 +172,7 @@
                     <br>
                     <br>
                     <input type="submit" name="enviar" value="Alta">
+                    <input type="button" name="cancelar" value="Cancelar" onclick="location='../index.php'">
                 </form>
                 <?php
                 break;
