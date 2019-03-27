@@ -71,29 +71,29 @@
                     ?>
                     <p>Conexión correcta.</p>
                     <?php
+                    $miDB->beginTransaction();
                     $sql = 'INSERT INTO Departamento (CodDepartamento, DescDepartamento) VALUES (:codDepartamento, :descDepartamento)';
                     $statement = $miDB->prepare($sql);
 
                     for ($numeroInsercion = 1; $numeroInsercion < $numero; $numeroInsercion++) {
-                        $miDB->beginTransaction();
+
                         $statement->bindParam(':codDepartamento', $a_respuesta[$numeroInsercion]['codDepartamento']);
                         $statement->bindParam(':descDepartamento', $a_respuesta[$numeroInsercion]['descDepartamento']);
+                    }
+                    if (!$statement->execute()) {
+                        $transactionOK = false;
+                    }
 
-                        if (!$statement->execute()) {
-                            $transactionOK = false;
-                        }
-
-                        if ($transactionOK) {
-                            $miDB->commit();
-                            ?>
-                            <p>Transacción realizada con éxito.</p>
-                            <?php
-                        } else {
-                            $miDB->rollBack();
-                            ?>
-                            <p>La transacción no ha podido ser realizada.</p>
-                            <?php
-                        }
+                    if ($transactionOK) {
+                        $miDB->commit();
+                        ?>
+                        <p>Transacción realizada con éxito.</p>
+                        <?php
+                    } else {
+                        $miDB->rollBack();
+                        ?>
+                        <p>La transacción no ha podido ser realizada.</p>
+                        <?php
                     }
                 } catch (PDOException $pdoe) {
                     $miDB->rollBack();

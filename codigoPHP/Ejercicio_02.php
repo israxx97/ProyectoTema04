@@ -14,7 +14,13 @@ try {
     $sql = 'SELECT * FROM Departamento';
     $statement = $miDB->prepare($sql);
     $statement->execute();
-    ?><table border="1"><?php
+    ?>
+    <table border="1">
+        <tr>
+            <th>CodDepartamento</th>
+            <th>DescDepartamento</th>
+        </tr>
+        <?php
         while ($resultado = $statement->fetchObject()) {
             ?>
             <tr>

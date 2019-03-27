@@ -13,6 +13,15 @@ try {
     ?>
     <p>Conexión correcta.</p>
     <?php
+    $attributes = array(
+        "AUTOCOMMIT", "ERRMODE", "CASE", "CLIENT_VERSION", "CONNECTION_STATUS",
+        "ORACLE_NULLS", "SERVER_INFO", "SERVER_VERSION"
+    );
+
+    foreach ($attributes as $val) {
+        echo "PDO::ATTR_$val: ";
+        echo $miDB->getAttribute(constant("PDO::ATTR_$val")) . "<br>";
+    }
 } catch (PDOException $pdoe) {
     ?><p><?php echo $pdoe->getMessage(); ?></p><?php
 } finally {

@@ -18,7 +18,7 @@
     <body>
         <nav class="navbar navbar-dark bg-dark justify-content-between">
             <a class="navbar-brand" href="../../index.html"><img src="./webroot/images/home.png" alt="home"></a>
-            <a class="navbar-brand" href="https://github.com/israxx97/ProyectoTema03" target="_blank"><img src="../webroot/images/github-logo.png" alt="github">&nbsp;Git hub</a>
+            <a class="navbar-brand" href="https://github.com/israxx97/ProyectoTema04" target="_blank"><img src="../webroot/images/github-logo.png" alt="github">&nbsp;Git hub</a>
             <h3 class="text-white">ProyectoDWES - Tema 04</h3>
         </nav>
         <table class="table table-striped">
